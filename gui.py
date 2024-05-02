@@ -7,9 +7,11 @@ class Gui:
                 [0, 0, 0],
                 [0, 0, 0]]
     turn = 0
-    gameover = False
     player = 0
+    winner = 0
+    gameover = False
     gamestart = False
+
     def __init__(self,window):
         self.window = window
         self.frame_shape = Frame(self.window)
@@ -25,7 +27,6 @@ class Gui:
 
         #playing page
         self.frame_game = Frame(self.window)
-
         self.game_boxes = []
         for i in range(3):
             for j in range(3):
@@ -46,41 +47,50 @@ class Gui:
         self.button_no.pack(side = 'right')
         self.frame_buttons.pack(anchor='n')
 
-        #self.frame_replay = Frame(self.window)
-        #self.button_replay = Button(self.frame_replay, text='Again', command=self.load_game)
-        #self.button_replay.pack(side='bottom')
-
-
         self.frame_game.pack_forget()
         self.frame_buttons.pack_forget()
-        #self.frame_replay.pack_forget()
-
-        #print(self.get_box_status(1,2))
 
         #end screen
+        self.frame_end = Frame(self.window)
+        self.label_end = Label(self.frame_end, font=('Ariel', 12), text = 'GAME OVER')
+        self.label_result = Label(self.frame_end, font=('Ariel', 12), text='The winner is...')
+        self.label_replay = Label(self.frame_end, font=('Ariel', 12), text='Would you like to play again?')
+        self.button_replay = Button(self.frame_end, text='YES!', command=self.load_game)
+
+        self.frame_end.pack(anchor='n')
+        self.frame_end.pack_forget()
+
 
 
     def load_game(self):
-        self.gameover = False
         self.frame_title.pack_forget()
+        self.frame_end.pack_forget()
+        self.frame_game.pack_forget()
+        self.frame_buttons.forget()
+
         self.frame_game.pack()
-        self.frame_buttons.pack()
         for game_box in self.game_boxes:
             game_box.config(bg='white')
 
 
+        self.frame_buttons.pack()
+
+
+
+
+
     def plr_start(self):
-        self.button_yes.forget()
-        self.button_no.forget()
-        self.label_game.forget()
+        self.button_yes.pack_forget()
+        self.button_no.pack_forget()
+        self.label_game.pack_forget()
 
         self.gamestart = True
         self.player = 1
 
     def cpu_start(self):
-        self.button_yes.forget()
-        self.button_no.forget()
-        self.label_game.forget()
+        self.button_yes.pack_forget()
+        self.button_no.pack_forget()
+        self.label_game.pack_forget()
 
         self.gamestart = True
         self.squares[0][0] = 2
@@ -88,23 +98,32 @@ class Gui:
         self.player = 1
 
 
-    def select_square(self, row, col):
-        self.squares = logic.playermove(self.squares, self.player, (row,col))
-        print(self.squares)
-
-
 
     def square_clicked(self, event):
-        if self.gamestart and not self.gameover:
-            if self.player == 1:
-                self.click_square = event.widget
-                row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
-                self.select_square(row,col)
-                self.update_screen(row,col)
+        try:
+            if self.gamestart and not self.gameover:
+                self.turn += 1
+                if self.player == 1:
+                    self.click_square = event.widget
+                    row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
+                    logic.playermove(self.squares, row, col)
+                    self.update_screen(row,col)
 
-                row, col = logic.checkstrat(self.squares)[0], logic.checkstrat(self.squares)[1]
-                self.squares[row][col] = 2
-                self.update_screen(row, col)
+                    row, col = logic.checkstrat(self.squares)
+                    self.squares[row][col] = 2
+                    self.update_screen(row, col)
+
+                    self.check_over()
+
+        except TypeError:
+            self.gameover = True
+            self.end_screen()
+
+    def check_over(self):
+        print(self.squares)
+        self.winner = logic.gameover(self.squares)
+        if self.winner == 'draw' or self.winner == 'player' or self.winner == 'cpu':
+            self.end_screen()
 
     def update_screen(self, row, col):
         status = self.squares[row][col]
@@ -114,14 +133,9 @@ class Gui:
             bg_color = 'red'
         else:
             bg_color = 'white'
-
         self.game_boxes[row * 3 + col].configure(bg=bg_color)
 
-
-    def get_box_status(self, row, col):
-        index = row * 3 + col
-        box = self.game_boxes[index]
-        status = box.cget()
-        return status
-
-
+    def end_screen(self):
+        self.frame_game.pack_forget()
+        print(self.winner)
+        print(self.turn)
