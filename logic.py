@@ -56,50 +56,53 @@ def checkstrat(sq):
     klist = [2, 1]
     # horizs
     for k in klist:
+        if sq[0][0] == 0:
+            return 0, 0
+
         for i in range(3):
             # horiz
             if [0, k, k] == sq[i]:
-                return converting(sq, i, 0, 2)
+                return i, 0
             elif [k, 0, k] == sq[i]:
-                return converting(sq, i, 1, 2)
+                return i, 1
             elif [k, k, 0] == sq[i]:
-                return converting(sq, i, 2, 2)
+                return i, 2
 
             # verts
             if sq[1][i] == sq[2][i] == k and sq[0][i] == 0:
-                return converting(sq, 0, i, 2)
+                return 0, i
             elif sq[0][i] == sq[2][i] == k and sq[1][i] == 0:
-                return converting(sq, 1, i, 2)
+                return 1, i
             elif sq[0][i] == sq[1][i] == k and sq[2][i] == 0:
-                return converting(sq, 2, i, 2)
+                return 2, i
 
         # diag
         if sq[2][2] == sq[1][1] == k and sq[0][0] == 0:
-            return converting(sq, 0, 0, 2)
+            return 0, 0
         elif sq[2][0] == sq[1][1] == k and sq[0][2] == 0:
-            return converting(sq, 0, 2, 2)
+            return  0, 2
         elif sq[0][2] == sq[1][1] == k and sq[2][0] == 0:
-            return converting(sq, 2, 0, 2)
+            return  2, 0
         elif sq[0][0] == sq[1][1] == k and sq[0][2] == 0:
-            return converting(sq, 0, 2, 2)
+            return 0, 2
 
     # first move
     if sq[0][0] == 0:
-        return converting(sq, 0, 0, 2)
+        return 0, 0
     elif sq[0][0] != 0 and sq[1][1] == 0 and sq[2][2] != 1:
-        return converting(sq, 1, 1, 2)
+        return 1, 1
     elif sq[0][0] == 2:
         if sq[2][2] == 0:
-            return converting(sq, 2, 2, 2)
+            return 2, 2
         elif sq[1][1] == 1 and sq[2][2] == 0:
-            return converting(sq, 2, 2, 2)
+            return 2, 2
     elif sq[0][0] == 1 and sq[2][2] == 1 and sq[1][0] == 0:
-        return converting(sq, 1, 0, 2)
+        return 1, 0
 
     for i in range(3):
         for k in range(3):
             if sq[i][k] == 0:
-                return converting(sq, i, k, 2)
+                return i, k
 
 
 def playerinput():
@@ -130,17 +133,12 @@ def converting(sq, x, y, whosturn):
     return sq
 
 
-def playermove(sq, whosturn):
+def playermove(sq, whosturn, select):
     if whosturn == 1:
-        usr_move = playerinput()
-        sq = converting(sq, int(usr_move[0]), int(usr_move[1]), whosturn)
+        sq = converting(sq, select[0], select[1], whosturn)
 
     elif whosturn == 2:
-        if sq[0][0] == 0:
-            sq[0][0] = whosturn
-            return sq
-        else:
-            return checkstrat(sq)
+        sq = checkstrat(sq)
 
     return sq
 
