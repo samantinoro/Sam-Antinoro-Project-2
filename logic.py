@@ -1,6 +1,9 @@
 # logic for tic-tac-toe game. Modified from code I finished on February-20-2024
 # new and improved tic-tac-toe
 # and using just generally better code :)
+
+import gui
+
 def checkwin(sq, x):
     winner = ''
 
@@ -162,15 +165,15 @@ def swap(pfirst):
     return pfirst
 
 
-def boarding(pfirst, sq, dp, turncount):
+def boarding(pfirst, sq, turncount):
     while gameover(sq)[0] == 0:
-        printscreen(sq, dp)
+        #printscreen(sq, dp)
         sq = playermove(sq, pfirst)
         pfirst = swap(pfirst)
         # print(f'Player turn: {pfirst}')
         turncount += 1
 
-    printscreen(sq, dp)
+    #printscreen(sq, dp)
     print(f'{(gameover(sq))[1]} won')
     choice = ''
     while choice.upper().strip() != 'Y' and choice.upper().strip() != 'N':
@@ -181,19 +184,7 @@ def boarding(pfirst, sq, dp, turncount):
         print('Thank you for playing!')
 
 
-def choose():
-    select = ''
-    result = 0
-    while select != 'Y' and select != 'N':
-        select = str(input('Would you like to go first? (Y/N): ')).upper().strip()
-    if select == 'Y':
-        result = 1
-    elif select == 'N':
-        result = 2
-    return result
-
-
-def startup():
+def startup(pfirst):
     squares = [[0, 0, 0],
                [0, 0, 0],
                [0, 0, 0]]
@@ -211,13 +202,4 @@ def startup():
                 ["B   O |", " O |", " O "],
                 ["C   O |", " O |", " O "]]]
 
-    pfirst = choose()
     boarding(pfirst, squares, display, 0)
-
-
-def main():
-    startup()
-
-
-if __name__ == '__main__':
-    main()
