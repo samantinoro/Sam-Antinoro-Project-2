@@ -50,7 +50,6 @@ class Gui:
         self.frame_game.pack_forget()
         self.frame_options.pack_forget()
 
-
     def load_sett(self):
         print('test')
 
