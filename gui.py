@@ -50,14 +50,6 @@ class Gui:
         self.frame_game.pack_forget()
         self.frame_options.pack_forget()
 
-        # Set up End + Stats Screen
-        self.frame_end = Frame(self.window)
-        self.label_end = Label(self.frame_end, font=('Ariel', 12), text='GAME OVER')
-        self.label_result = Label(self.frame_end, font=('Ariel', 12), text='The winner is...')
-        self.label_replay = Label(self.frame_end, font=('Ariel', 12), text='Would you like to play again?')
-        self.button_replay = Button(self.frame_end, text='YES!', command=self.load_game)
-        self.frame_end.pack(anchor='n')
-        self.frame_end.pack_forget()
 
     def load_sett(self):
         print('test')
@@ -65,9 +57,9 @@ class Gui:
     def load_game(self):
         self.Logic.set_vars()
 
-        self.frame_title.pack_forget()
-        self.frame_end.pack_forget()
-        self.frame_game.pack_forget()
+        self.frame_title.forget()
+        self.frame_game.forget()
+        self.frame_options.forget()
 
         self.frame_game.pack()
         for game_box in self.game_boxes:
@@ -76,6 +68,8 @@ class Gui:
         self.label_options.config(text='Which game mode would you like to play?')
         self.button_left.config(text='Player vs Player', command=self.pvp_mode)
         self.button_right.config(text='Player vs Computer', command=self.cpu_mode)
+        self.button_left.pack(side='left')
+        self.button_right.pack(side='right')
         self.frame_options.pack()
 
     def pvp_mode(self):
@@ -158,6 +152,6 @@ class Gui:
     def end_screen(self):
         self.frame_game.forget()
         scores = f'Player 1 Score:{self.Logic.win_count[0]}\nPlayer 2 Score:{self.Logic.win_count[1]}'
-        self.label_options.config(text=f'Turns = {self.Logic.turn}\n{scores}')
-        self.button_left.config(text='Yes', command=self.plr_start)
-        self.frame_options.pack(anchor='center')
+        self.label_options.config(text=f'Turns = {self.Logic.turn}\n{scores}\n\nRetry?')
+        self.button_left.config(text='Yes', command=self.load_game)
+        self.frame_options.pack(anchor='center', pady=100)
