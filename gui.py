@@ -51,7 +51,7 @@ class Gui:
         self.frame_options.pack_forget()
 
     def load_sett(self):
-        print('test')
+        print('tent')
 
     def load_game(self):
         self.Logic.set_vars()
