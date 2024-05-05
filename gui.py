@@ -152,6 +152,6 @@ class Gui:
     def end_screen(self):
         self.frame_game.forget()
         scores = f'Player 1 Score:{self.Logic.win_count[0]}\nPlayer 2 Score:{self.Logic.win_count[1]}'
-        self.label_options.config(text=f'Turns = {self.Logic.turn}\n{scores}\n\nRetry?')
+        self.label_options.config(text=f'Turns = {self.Logic.turn}\n\n{scores}\n\nRetry?\n')
         self.button_left.config(text='Yes', command=self.load_game)
         self.frame_options.pack(anchor='center', pady=100)
