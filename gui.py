@@ -86,7 +86,6 @@ class Gui:
         self.gamestart = True
         self.Logic.playermove(0, 0, 2)
         self.update_screen(0, 0)
-        self.Logic.player = 1
 
     def square_clicked(self, event):
         try:
