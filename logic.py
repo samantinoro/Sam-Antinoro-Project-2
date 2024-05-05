@@ -118,6 +118,7 @@ class TTTLogic:
     def playermove(self, row, col, player):
         self.turn += 1
         self.sq[row][col] = player
+        self.player = 3 - self.player
         return self.sq
 
     def set_vars(self):
