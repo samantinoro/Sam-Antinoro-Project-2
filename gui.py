@@ -142,6 +142,7 @@ class Gui:
         else:
             self.Logic.final_winner = 'NOBODY'
 
+        self.gamestart = False
         self.label_options.config(text=f'{self.Logic.final_winner} WINS')
         self.button_left.config(text='See Stats', command=self.end_screen)
         self.label_options.pack()
