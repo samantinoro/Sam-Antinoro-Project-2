@@ -4,6 +4,11 @@
 def checkwin(sq, x):
     winner = ''
 
+    if x == 1:
+        winner = 1
+    elif x == 2:
+        winner = 2
+
     # have to check columns separately
     cnt = 0
     for column in range(3):
@@ -13,18 +18,18 @@ def checkwin(sq, x):
             if mem == x:
                 cnt += 1
             if cnt == 3:
-                return x
+                return 1, winner
 
     if [x, x, x] in sq:
-        return x
+        return 1, winner
     elif x == sq[0][0] == sq[1][1] == sq[2][2]:
-        return x
+        return 1, winner
     elif x == sq[0][2] == sq[1][1] == sq[2][0]:
-        return x
+        return 1, winner
     elif cnt == 3:
-        return x
+        return 1, winner
     else:
-        return 0
+        return 0, 3
 
 
 def gameover(sq):
@@ -33,15 +38,14 @@ def gameover(sq):
         if 0 not in row:
             check += 1
     if check == 3:
-        return 'draw'
+        return 1, 3
 
     else:
         liste = [checkwin(sq, 1), checkwin(sq, 2)]
-        for i in liste:
-            if i == 1:
-                return 'player'
-            elif i == 2:
-                return 'cpu'
+        for i in range(2):
+            if 1 in liste[i]:
+                return 1, liste[i][1]
+        return 0, 0
 
 
 def checkstrat(sq):
@@ -68,16 +72,18 @@ def checkstrat(sq):
                 return 1, i
             elif sq[0][i] == sq[1][i] == k and sq[2][i] == 0:
                 return 2, i
+        #print('logic error not horiz or vert')
 
         # diag
         if sq[2][2] == sq[1][1] == k and sq[0][0] == 0:
             return 0, 0
         elif sq[2][0] == sq[1][1] == k and sq[0][2] == 0:
-            return  0, 2
-        elif sq[0][2] == sq[1][1] == k and sq[2][0] == 0:
-            return  2, 0
-        elif sq[0][0] == sq[1][1] == k and sq[0][2] == 0:
             return 0, 2
+        elif sq[0][2] == sq[1][1] == k and sq[2][0] == 0:
+            return 2, 0
+        elif sq[0][0] == sq[1][1] == k and sq[2][2] == 0:
+            return 2, 2
+        #print('logic error not in diag')
 
     # first move
     if sq[0][0] == 0:
@@ -91,15 +97,17 @@ def checkstrat(sq):
             return 2, 2
     elif sq[0][0] == 1 and sq[2][2] == 1 and sq[1][0] == 0:
         return 1, 0
+    #print('logic error not in first move')
 
     for i in range(3):
         for k in range(3):
             if sq[i][k] == 0:
+                #print('logic error in random select')
                 return i, k
 
 
 
-def playermove(sq, row, col):
-    sq[row][col] = 1
+def playermove(sq, row, col, player):
+    sq[row][col] = player
     return sq
 
