@@ -36,7 +36,7 @@ class Gui:
                 self.game_boxes.append(self.game_box)
         self.frame_game.pack(anchor='n', pady=10)
 
-        # Setup label and buttons for game options (multi purpose)
+        # Setup label and buttons for game options (multipurpose)
         self.frame_options = Frame(self.window)
         self.label_options = Label(self.frame_options, font=('Ariel', 11))
         self.button_left = Button(self.frame_options)
@@ -108,8 +108,8 @@ class Gui:
                     self.Logic.playermove(row, col)
                     self.update_screen(row, col)
 
-                self.Logic.tempwin = self.Logic.gameover()
-                if self.Logic.tempwin[0] == 1:
+                self.Logic.temp_win = self.Logic.gameover()
+                if self.Logic.temp_win[0] == 1:
                     raise TypeError
 
         except TypeError:
@@ -132,10 +132,10 @@ class Gui:
         self.game_boxes[row * 3 + col].configure(bg=bg_color)
 
     def end_game(self):
-        if self.Logic.tempwin[1] == 1:
+        if self.Logic.temp_win[1] == 1:
             self.Logic.win_count[0] += 1
             self.Logic.final_winner = 'Player 1'
-        elif self.Logic.tempwin[1] == 2:
+        elif self.Logic.temp_win[1] == 2:
             self.Logic.win_count[1] += 1
             self.Logic.final_winner = 'Player 2'
         else:
