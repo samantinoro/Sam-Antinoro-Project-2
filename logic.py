@@ -96,21 +96,24 @@ class TTTLogic:
             elif self.gameover()[1] == 3:
                 return 3
 
-            print(f'Player 1 Wins: {self.win_count[0]}, Player 2: {self.win_count[1]}')
 
     def gameover(self):
         check = 0
+        winners = ['Player 1', 'Player 2', 'NOBODY']
         for row in self.sq:
             if 0 not in row:
                 check += 1
         if check == 3:
             self.game_end = True
+            self.final_winner = 'NOBODY'
             return 1, 3
         else:
             winner_check = [self.checkwin(1), self.checkwin(2)]
             for i in range(2):
                 if 1 in winner_check[i]:
                     self.game_end = True
+                    self.win_count[i] += 1
+                    self.final_winner = winners[i]
                     return 1, winner_check[i][1]
             return 0, 0
 
