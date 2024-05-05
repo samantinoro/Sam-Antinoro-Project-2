@@ -139,3 +139,4 @@ class Gui:
         self.frame_game.pack_forget()
         print(self.winner)
         print(self.turn)
+        #
