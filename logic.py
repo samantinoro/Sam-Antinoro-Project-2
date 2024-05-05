@@ -12,50 +12,16 @@ class TTTLogic:
         self.win_count = [0, 0]
         self.game_end = False
 
-    def checkwin(self, x):
-        winner = None
+    def set_vars(self):
+        self.sq = [[0, 0, 0],
+                   [0, 0, 0],
+                   [0, 0, 0]]
+        self.turn = 0
 
-        if x == 1:
-            winner = 1
-        elif x == 2:
-            winner = 2
-
-        # have to check columns separately
-        cnt = 0
-        for column in range(3):
-            cnt = 0
-            for row in range(3):
-                mem = self.sq[row][column]
-                if mem == x:
-                    cnt += 1
-                if cnt == 3:
-                    return 1, winner
-
-        if [x, x, x] in self.sq:
-            return 1, winner
-        elif x == self.sq[0][0] == self.sq[1][1] == self.sq[2][2]:
-            return 1, winner
-        elif x == self.sq[0][2] == self.sq[1][1] == self.sq[2][0]:
-            return 1, winner
-        elif cnt == 3:
-            return 1, winner
-        else:
-            return 0, 3
-
-    def gameover(self):
-        check = 0
-        for row in self.sq:
-            if 0 not in row:
-                check += 1
-        if check == 3:
-            return 1, 3
-
-        else:
-            win_conditions = [self.checkwin(1), self.checkwin(2)]
-            for i in range(2):
-                if 1 in win_conditions[i]:
-                    return 1, win_conditions[i][1]
-            return 0, 0
+    def playermove(self, row, col):
+        self.turn += 1
+        self.sq[row][col] = self.player
+        self.player = 3 - self.player
 
     def checkstrat(self):
         self.turn += 1
@@ -115,17 +81,6 @@ class TTTLogic:
                     # print('logic error in random select')
                     return i, k
 
-    def playermove(self, row, col):
-        self.turn += 1
-        self.sq[row][col] = self.player
-        self.player = 3 - self.player
-
-    def set_vars(self):
-        self.sq = [[0, 0, 0],
-                   [0, 0, 0],
-                   [0, 0, 0]]
-        self.turn = 0
-
     def check_over(self):
         if self.gameover()[0] == 1:
             self.game_end = True
@@ -139,3 +94,40 @@ class TTTLogic:
                 print('draw')
 
             print(f'Player 1 Wins: {self.win_count[0]}, Player 2: {self.win_count[1]}')
+
+    def gameover(self):
+        check = 0
+        for row in self.sq:
+            if 0 not in row:
+                check += 1
+        if check == 3:
+            return 1, 3
+        else:
+            winner_check = [self.checkwin(1), self.checkwin(2)]
+            for i in range(2):
+                if 1 in winner_check[i]:
+                    return 1, winner_check[i][1]
+            return 0, 0
+
+    def checkwin(self, winner):
+        # check columns separately
+        cnt = 0
+        for column in range(3):
+            cnt = 0
+            for row in range(3):
+                mem = self.sq[row][column]
+                if mem == winner:
+                    cnt += 1
+                if cnt == 3:
+                    return 1, winner
+
+        if [winner, winner, winner] in self.sq:
+            return 1, winner
+        elif winner == self.sq[0][0] == self.sq[1][1] == self.sq[2][2]:
+            return 1, winner
+        elif winner == self.sq[0][2] == self.sq[1][1] == self.sq[2][0]:
+            return 1, winner
+        elif cnt == 3:
+            return 1, winner
+        else:
+            return 0, 3
