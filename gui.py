@@ -6,8 +6,8 @@ from logic import TTTLogic
 class Gui:
     gamestart = False
     pvp = False
-    colors = ['#FF0000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#FF00FF']
-    col_name = ['Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Pink']
+    colors = ['#FF0000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#FF00FF', '#FFFFFF']
+    col_name = ['Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Pink', 'White']
 
     def __init__(self, window):
         self.color_p1 = self.colors[4]
@@ -58,23 +58,23 @@ class Gui:
         # settings screen options
         self.frame_sett = Frame(self.window)
         self.label_sett = Label(self.frame_sett, font=('Ariel', 12), text='Select your colors')
-        self.slider_p1 = Scale(self.frame_sett, label='Player 1 Color', from_=0, to=5)
+        self.slider_p1 = Scale(self.frame_sett, label='Player 1 Color', from_=0, to=len(self.colors)-2)
         self.slider_p1.config(orient=HORIZONTAL, showvalue=False, command=self.choose_p1)
         self.label_col1 = Label(self.frame_sett, font=('Ariel', 11), text='')
-        self.slider_p2 = Scale(self.frame_sett, label='Player 2 Color', from_=0, to=5)
+        self.slider_p2 = Scale(self.frame_sett, label='Player 2 Color', from_=0, to=len(self.colors)-2)
         self.slider_p2.config(orient=HORIZONTAL, showvalue=False, command=self.choose_p2)
         self.label_col2 = Label(self.frame_sett, font=('Ariel', 11), text='')
         self.label_sett_err = Label(self.frame_sett, font=('Ariel', 11))
         self.butt_exit = Button(self.frame_sett, text='Exit', command=self.start_screen)
 
         self.label_sett.pack(side='top', pady=20)
-        self.slider_p1.pack(side='top')
-        self.label_col1.pack(side='top')
-        self.slider_p2.pack(side='top')
-        self.label_col2.pack(side='top')
-        self.label_sett_err.pack(side='top')
+        self.slider_p1.pack()
+        self.label_col1.pack()
+        self.slider_p2.pack()
+        self.label_col2.pack()
+        self.label_sett_err.pack()
         self.label_sett_err.forget()
-        self.butt_exit.pack(side='top', pady=20)
+        self.butt_exit.pack()
         self.frame_sett.pack_forget()
 
     def start_screen(self):
@@ -95,13 +95,20 @@ class Gui:
         self.frame_title.forget()
         self.frame_sett.pack()
 
-        self.button_left.forget()
         self.button_right.forget()
 
         temp_text1 = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
         temp_text2 = f'Player 2: {self.Logic.win_count[1]} points'
         self.label_options.config(text=temp_text1 + temp_text2)
+        self.button_left.config(text='Reset Score?', command=self.set_score)
         self.frame_options.pack()
+
+    def set_score(self):
+        self.Logic.reset_score()
+        temp_text1 = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
+        temp_text2 = f'Player 2: {self.Logic.win_count[1]} points'
+        self.label_options.config(text=temp_text1 + temp_text2)
+
 
     def choose_p1(self, cval):
         cval = int(cval)
@@ -201,7 +208,7 @@ class Gui:
         elif status == 2:
             bg_color = self.color_p2
         else:
-            bg_color = '#FFFFFF'
+            bg_color = self.colors[-1]
         self.game_boxes[row * 3 + col].configure(bg=bg_color)
 
     def end_game(self):
@@ -218,6 +225,6 @@ class Gui:
         temp_text1 = f'Turns = {self.Logic.turn}\n\n'
         temp_text2 = f'Score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
         temp_text3 = f'Player 2: {self.Logic.win_count[1]} points'
-        self.label_options.config(text=temp_text1 + temp_text2 + temp_text3 + '\nRestart?\n')
+        self.label_options.config(text=temp_text1 + temp_text2 + temp_text3 + '\n\nRestart?')
         self.button_left.config(text='Yes', command=self.start_screen)
         self.frame_options.pack(anchor='center', pady=100)

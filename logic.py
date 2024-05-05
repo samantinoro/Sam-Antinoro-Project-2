@@ -23,6 +23,9 @@ class TTTLogic:
         self.game_end = False
         self.temp_win = [0, 0]
 
+    def reset_score(self):
+        self.win_count = [0, 0]
+
     def playermove(self, row, col):
         self.turn += 1
         self.sq[row][col] = self.player
