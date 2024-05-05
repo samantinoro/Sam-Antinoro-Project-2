@@ -11,7 +11,7 @@ class TTTLogic:
         self.player = 0
         self.win_count = [0, 0]
         self.game_end = False
-        self.temp_win = [0,0]
+        self.temp_win = [0, 0]
         self.final_winner = None
 
     def set_vars(self):
@@ -21,7 +21,7 @@ class TTTLogic:
         self.turn = 0
         self.player = 0
         self.game_end = False
-        self.temp_win = [0,0]
+        self.temp_win = [0, 0]
 
     def playermove(self, row, col):
         self.turn += 1
