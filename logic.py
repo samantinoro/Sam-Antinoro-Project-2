@@ -91,7 +91,6 @@ class TTTLogic:
             if self.gameover()[1] == 1:
                 return 1
             elif self.gameover()[1] == 2:
-                self.win_count[1] += 1
                 return 2
             elif self.gameover()[1] == 3:
                 return 3
@@ -134,8 +133,6 @@ class TTTLogic:
         elif winner == self.sq[0][0] == self.sq[1][1] == self.sq[2][2]:
             return 1, winner
         elif winner == self.sq[0][2] == self.sq[1][1] == self.sq[2][0]:
-            return 1, winner
-        elif cnt == 3:
             return 1, winner
         else:
             return 0, 3

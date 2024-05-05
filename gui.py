@@ -152,6 +152,7 @@ class Gui:
 
     def cpu_mode(self):
         self.pvp = False
+
         self.label_options.config(text='Would you like to go first?')
         self.button_left.config(text='Yes', command=self.plr_start)
         self.button_right.config(text='No', command=self.cpu_start)
@@ -159,6 +160,7 @@ class Gui:
 
     def plr_start(self):
         self.frame_options.pack_forget()
+
         self.Logic.player = 1
         self.gamestart = True
 
@@ -180,7 +182,7 @@ class Gui:
                     self.Logic.playermove(row, col)
                     self.update_screen(row, col)
 
-                if self.Logic.gameover == 1:
+                if self.Logic.gameover()[0] == 1:
                     raise TypeError
 
         except TypeError:
