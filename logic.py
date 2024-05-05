@@ -115,9 +115,9 @@ class TTTLogic:
                     # print('logic error in random select')
                     return i, k
 
-    def playermove(self, row, col, player):
+    def playermove(self, row, col):
         self.turn += 1
-        self.sq[row][col] = player
+        self.sq[row][col] = self.player
         self.player = 3 - self.player
 
     def set_vars(self):
