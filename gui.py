@@ -10,6 +10,7 @@ class Gui:
     def __init__(self, window):
         self.Logic = TTTLogic()
         self.click_square = None
+
         self.window = window
         self.frame_shape = Frame(self.window)
         self.frame_shape.pack()
@@ -35,40 +36,26 @@ class Gui:
                 self.game_boxes.append(self.game_box)
         self.frame_game.pack(anchor='n', pady=10)
 
-        # Select PvP or PvCPU
-        self.frame_mode = Frame(self.window)
-        self.label_pvp = Label(self.frame_mode, font=('Ariel', 11), text='Which game mode would you like to play?')
-        self.button_pvp = Button(self.frame_mode, text='Player vs Player', command=self.pvp_mode)
-        self.button_pvcpu = Button(self.frame_mode, text='Player vs Computer', command=self.cpu_mode)
+        # Setup label and buttons for game options (multi purpose)
+        self.frame_options = Frame(self.window)
+        self.label_options = Label(self.frame_options, font=('Ariel', 11))
+        self.button_left = Button(self.frame_options)
+        self.button_right = Button(self.frame_options)
 
-        self.label_pvp.pack(side='top')
-        self.button_pvp.pack(side='left')
-        self.button_pvcpu.pack(side='right')
-        self.frame_mode.pack(side='top', pady=10)
-
-        # PvCPU: Pick who goes first
-        self.frame_order = Frame(self.window)
-        self.label_game = Label(self.frame_order, font=('Ariel', 11), text='Would you like to go first?')
-        self.button_p_first = Button(self.frame_order, text='Yes', command=self.plr_start)
-        self.button_cpu_first = Button(self.frame_order, text='No', command=self.cpu_start)
-
-        self.label_game.pack(side='top', pady=10)
-        self.button_p_first.pack(side='left')
-        self.button_cpu_first.pack(side='right')
-        self.frame_mode.pack(anchor='n')
-        self.frame_order.pack(anchor='n')
+        self.label_options.pack(side='top')
+        self.button_left.pack(side='left')
+        self.button_right.pack(side='right')
+        self.frame_options.pack(side='top', pady=10)
 
         self.frame_game.pack_forget()
-        self.frame_mode.pack_forget()
-        self.frame_order.pack_forget()
+        self.frame_options.pack_forget()
 
-        # Set up End / Stats Screen
+        # Set up End + Stats Screen
         self.frame_end = Frame(self.window)
         self.label_end = Label(self.frame_end, font=('Ariel', 12), text='GAME OVER')
         self.label_result = Label(self.frame_end, font=('Ariel', 12), text='The winner is...')
         self.label_replay = Label(self.frame_end, font=('Ariel', 12), text='Would you like to play again?')
         self.button_replay = Button(self.frame_end, text='YES!', command=self.load_game)
-
         self.frame_end.pack(anchor='n')
         self.frame_end.pack_forget()
 
@@ -76,40 +63,42 @@ class Gui:
         print('test')
 
     def load_game(self):
+        self.Logic.set_vars()
+
         self.frame_title.pack_forget()
         self.frame_end.pack_forget()
         self.frame_game.pack_forget()
-        self.frame_order.forget()
 
         self.frame_game.pack()
         for game_box in self.game_boxes:
             game_box.config(bg='white')
 
-        self.Logic.set_vars()
-        self.frame_mode.pack()
+        self.label_options.config(text='Which game mode would you like to play?')
+        self.button_left.config(text='Player vs Player', command=self.pvp_mode)
+        self.button_right.config(text='Player vs Computer', command=self.cpu_mode)
+        self.frame_options.pack()
 
     def pvp_mode(self):
         self.pvp = True
-        self.frame_mode.pack_forget()
+        self.frame_options.pack_forget()
         self.plr_start()
 
     def cpu_mode(self):
         self.pvp = False
-        self.frame_mode.pack_forget()
-        self.frame_order.pack()
+
+        self.label_options.config(text='Would you like to go first?')
+        self.button_left.config(text='Yes', command=self.plr_start)
+        self.button_right.config(text='No', command=self.cpu_start)
+        self.frame_options.pack()
 
     def plr_start(self):
-        self.button_p_first.pack_forget()
-        self.button_cpu_first.pack_forget()
-        self.label_game.pack_forget()
+        self.frame_options.pack_forget()
 
         self.Logic.player = 1
         self.gamestart = True
 
     def cpu_start(self):
-        self.button_p_first.pack_forget()
-        self.button_cpu_first.pack_forget()
-        self.label_game.pack_forget()
+        self.frame_options.pack_forget()
 
         self.Logic.player = 2
         self.gamestart = True
@@ -125,10 +114,13 @@ class Gui:
                     row, col = self.Logic.checkstrat()
                     self.Logic.playermove(row, col)
                     self.update_screen(row, col)
-                self.Logic.check_over()
+
+                self.Logic.tempwin = self.Logic.gameover()
+                if self.Logic.tempwin[0] == 1:
+                    raise TypeError
 
         except TypeError:
-            self.Logic.check_over()
+            self.end_game()
 
     def change_square(self, event):
         self.click_square = event.widget
@@ -145,3 +137,28 @@ class Gui:
         else:
             bg_color = 'white'
         self.game_boxes[row * 3 + col].configure(bg=bg_color)
+
+    def end_game(self):
+        if self.Logic.tempwin[1] == 1:
+            winner = 'Player 1'
+        elif self.Logic.tempwin[1] == 2:
+            winner = 'Player 2'
+        else:
+            winner = 'NOBODY'
+
+        self.label_options.config(text=f'{winner} WINS')
+        self.button_left.config(text='See Stats', command=self.end_screen)
+        self.label_options.pack()
+        self.button_right.forget()
+        self.button_left.pack(side='top',anchor='n')
+        self.frame_options.pack()
+
+
+    def end_screen(self):
+        self.label_options.config(text=f'Game Stats:\nWinner: {self.Logic.tempwin}\nTurn Count = {self.Logic.turn}')
+        self.button_left.config(text='Yes', command=self.plr_start)
+        self.button_right.config(text='No', command=self.cpu_start)
+        self.frame_options.pack()
+
+
+
