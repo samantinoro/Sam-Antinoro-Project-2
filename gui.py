@@ -140,25 +140,24 @@ class Gui:
 
     def end_game(self):
         if self.Logic.tempwin[1] == 1:
-            winner = 'Player 1'
+            self.Logic.win_count[0] += 1
+            self.Logic.final_winner = 'Player 1'
         elif self.Logic.tempwin[1] == 2:
-            winner = 'Player 2'
+            self.Logic.win_count[1] += 1
+            self.Logic.final_winner = 'Player 2'
         else:
-            winner = 'NOBODY'
+            self.Logic.final_winner = 'NOBODY'
 
-        self.label_options.config(text=f'{winner} WINS')
+        self.label_options.config(text=f'{self.Logic.final_winner} WINS')
         self.button_left.config(text='See Stats', command=self.end_screen)
         self.label_options.pack()
         self.button_right.forget()
-        self.button_left.pack(side='top',anchor='n')
+        self.button_left.pack(side='top', anchor='n')
         self.frame_options.pack()
-
 
     def end_screen(self):
-        self.label_options.config(text=f'Game Stats:\nWinner: {self.Logic.tempwin}\nTurn Count = {self.Logic.turn}')
+        self.frame_game.forget()
+        scores = f'Player 1 Score:{self.Logic.win_count[0]}\nPlayer 2 Score:{self.Logic.win_count[1]}'
+        self.label_options.config(text=f'Turns = {self.Logic.turn}\n{scores}')
         self.button_left.config(text='Yes', command=self.plr_start)
-        self.button_right.config(text='No', command=self.cpu_start)
-        self.frame_options.pack()
-
-
-
+        self.frame_options.pack(anchor='center')

@@ -12,6 +12,7 @@ class TTTLogic:
         self.win_count = [0, 0]
         self.game_end = False
         self.tempwin = [0,0]
+        self.final_winner = None
 
     def set_vars(self):
         self.sq = [[0, 0, 0],
@@ -28,7 +29,6 @@ class TTTLogic:
         self.player = 3 - self.player
 
     def checkstrat(self):
-        self.turn += 1
         # instant win / lose conditions
         klist = [2, 1]
         # horizs
@@ -90,10 +90,9 @@ class TTTLogic:
             self.game_end = True
             if self.gameover()[1] == 1:
                 return 1
-                self.win_count[0] += 1
             elif self.gameover()[1] == 2:
-                return 2
                 self.win_count[1] += 1
+                return 2
             elif self.gameover()[1] == 3:
                 return 3
 
