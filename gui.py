@@ -4,15 +4,17 @@ from logic import TTTLogic
 
 
 class Gui:
-    gamestart = False
-    pvp = False
-    valid_move = None
-    colors = ['#FF0000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#FF00FF', '#FFFFFF']
-    col_name = ['Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Pink', 'White']
+    # Variables related to running GUI checks
+    gamestart: bool = False
+    pvp: bool = False
+    valid_move: bool = False
+    colors: list = ['#FF0000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#FF00FF', '#FFFFFF']
+    col_name: list = ['Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Pink', 'White']
 
-    def __init__(self, window):
-        self.color_p1 = self.colors[4]
-        self.color_p2 = self.colors[0]
+    # define instance variables, GUI elements, and GUI Methods
+    def __init__(self, window) -> None:
+        self.color_p1: str = self.colors[4]
+        self.color_p2: str = self.colors[0]
 
         self.Logic = TTTLogic()
         self.click_square = None
@@ -78,14 +80,24 @@ class Gui:
         self.butt_exit.pack()
         self.frame_sett.pack_forget()
 
-    def start_screen(self):
+    '''
+    Packs title Screen Elements and makes other frames invisible
+    :self: GUI frames
+    :return: Does not return anything
+    '''
+    def start_screen(self) -> None:
         self.frame_options.forget()
         self.frame_sett.forget()
         self.frame_title.pack()
 
-    def load_sett(self):
-        p1 = self.colors.index(self.color_p1)
-        p2 = self.colors.index(self.color_p2)
+    '''
+    Loads settings frame / menu elements, packs options label for more information
+    :self: GUI frames and elements, variable to check color selection lists
+    :return: No return variables
+    '''
+    def load_sett(self) -> None:
+        p1: int = self.colors.index(self.color_p1)
+        p2: int = self.colors.index(self.color_p2)
 
         self.slider_p1.set(p1)
         self.slider_p2.set(p2)
@@ -97,20 +109,30 @@ class Gui:
         self.frame_sett.pack()
         self.button_right.forget()
 
-        temp_text1 = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
-        temp_text2 = f'Player 2: {self.Logic.win_count[1]} points'
+        temp_text1: str = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
+        temp_text2: str = f'Player 2: {self.Logic.win_count[1]} points'
         self.label_options.config(text=temp_text1 + temp_text2)
         self.button_left.config(text='Reset Score?', command=self.set_score)
         self.button_left.pack(anchor='center', side='top')
         self.frame_options.pack()
 
-    def set_score(self):
+    '''
+    Resets cross-game score value via settings menu
+    :self: GUI elements, color variables, and Logic reset_score() function
+    :return: returns nothing
+    '''
+    def set_score(self) -> None:
         self.Logic.reset_score()
-        temp_text1 = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
-        temp_text2 = f'Player 2: {self.Logic.win_count[1]} points'
+        temp_text1: str = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
+        temp_text2: str = f'Player 2: {self.Logic.win_count[1]} points'
         self.label_options.config(text=temp_text1 + temp_text2)
 
-    def choose_p1(self, cval):
+    '''
+    Changes Player 1 color value to user selection from scale
+    :self: GUI elements, color variables
+    :return: does not return
+    '''
+    def choose_p1(self, cval) -> None:
         cval = int(cval)
         self.label_col1.config(text=self.col_name[cval])
         if self.colors[cval] != self.color_p2:
@@ -122,7 +144,12 @@ class Gui:
             self.label_sett_err.pack(pady=20)
             self.butt_exit.forget()
 
-    def choose_p2(self, cval):
+    '''
+    Changes Player 2 color value to user selection from scale
+    :self: GUI elements, color variables
+    :return: does not return
+    '''
+    def choose_p2(self, cval) -> None:
         cval = int(cval)
         self.label_col2.config(text=self.col_name[cval])
         if self.colors[cval] != self.color_p1:
@@ -134,7 +161,12 @@ class Gui:
             self.label_sett_err.pack(pady=20)
             self.butt_exit.forget()
 
-    def load_game(self):
+    '''
+    Loads game GUI frame and elements - game mode buttons, game grid
+    :self: GUI elements, grid, methods
+    :return: nothing
+    '''
+    def load_game(self) -> None:
         self.Logic.set_vars()
         self.frame_title.forget()
         self.frame_sett.forget()
@@ -152,32 +184,59 @@ class Gui:
         self.button_right.pack(side='right')
         self.frame_options.pack()
 
-    def pvp_mode(self):
-        self.pvp = True
+    '''
+    Sets game mode to Player vs Player, starts game with player 1, disappears frame
+    :self: GUI frame, class method
+    :return: Returns nothing
+    '''
+    def pvp_mode(self) -> None:
+        self.pvp: bool = True
         self.frame_options.pack_forget()
         self.plr_start()
 
-    def cpu_mode(self):
-        self.pvp = False
+    '''
+    Sets game to Player vs CPU, sets buttons to ask who's going first
+    :self: GUI frame and elements, class methods
+    :return: Returns nothing
+    '''
+    def cpu_mode(self) -> None:
+        self.pvp: bool = False
 
         self.label_options.config(text='Would you like to go first?')
         self.button_left.config(text='Yes', command=self.plr_start)
         self.button_right.config(text='No', command=self.cpu_start)
         self.frame_options.pack()
 
-    def plr_start(self):
+    '''
+    Method for when Player 1 starts, sets game to start
+    :self: GUI frame, init variable to allow player to interact with grid
+    :return: Returns nothing
+    '''
+    def plr_start(self) -> None:
         self.frame_options.pack_forget()
         self.Logic.player = 1
-        self.gamestart = True
+        self.gamestart: bool = True
 
-    def cpu_start(self):
+    '''
+    Method for when the Computer starts, sets game to start, selects first move
+    :self: GUI frame, Logic methods to select square, class method to update grid
+    :return: Returns nothing
+    '''
+    def cpu_start(self) -> None:
         self.frame_options.pack_forget()
         self.Logic.player = 2
-        self.gamestart = True
+        self.gamestart: bool = True
         self.Logic.playermove(0, 0)
         self.update_screen(0, 0)
 
-    def square_clicked(self, event):
+    '''
+    Method for processing when a grid square is clicked when the game is ongoing
+    :self: GUI elements, Logic method to handle in-game moves and check game / win status, 
+    class variable to allow CPU to move if player's move was valid, class method to update screen, 
+    :event: Tkinter event handling. This method goes when event -- grid square is clicked
+    :return: Returns nothing
+    '''
+    def square_clicked(self, event) -> None:
         try:
             if self.gamestart and not self.Logic.game_end:
                 self.change_square(event)
@@ -187,7 +246,7 @@ class Gui:
                         row, col = self.Logic.checkstrat()
                         self.Logic.playermove(row, col)
                         self.update_screen(row, col)
-                    self.valid_move = False
+                    self.valid_move: bool = False
 
                 if self.Logic.gameover()[0] == 1:
                     raise TypeError
@@ -195,16 +254,26 @@ class Gui:
         except TypeError:
             self.end_game()
 
-    def change_square(self, event):
+    '''
+    Function for actually selecting and changing a square on a player's move
+    :self: GUI events and grid elements, Logic methods to update in game values, class variable to ensure proper move
+    :return: Returns nothing
+    '''
+    def change_square(self, event) -> None:
         self.click_square = event.widget
         row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
         if self.Logic.sq[row][col] == 0:
             self.Logic.playermove(row, col)
             self.update_screen(row, col)
-            self.valid_move = True
+            self.valid_move: bool = True
 
-    def update_screen(self, row, col):
-        status = self.Logic.sq[row][col]
+    '''
+    Function to update the visuals of the grid once a move has been made.
+    :self: Logic methods to check square values, GUI grid elements to update grid
+    :return: Returns nothing 
+    '''
+    def update_screen(self, row, col) -> None:
+        status: int = self.Logic.sq[row][col]
         if status == 1:
             bg_color = self.color_p1
         elif status == 2:
@@ -213,8 +282,13 @@ class Gui:
             bg_color = self.colors[-1]
         self.game_boxes[row * 3 + col].configure(bg=bg_color)
 
-    def end_game(self):
-        self.gamestart = False
+    '''
+    Method to halt GUI upon end of the game and allow option to see end screen
+    :self: GUI frames and elements, Logic method to check end state and winner
+    :return: Returns nothing
+    '''
+    def end_game(self) -> None:
+        self.gamestart: bool = False
         self.label_options.config(text=f'{self.Logic.final_winner} WINS')
         self.button_left.config(text='See Stats', command=self.end_screen)
         self.label_options.pack()
@@ -222,11 +296,16 @@ class Gui:
         self.button_left.pack(side='top', anchor='n')
         self.frame_options.pack()
 
-    def end_screen(self):
+    '''
+    Makes Game frame invisible and packs End Screen and related Option frame element
+    :self: GUI frames and elements, Logic method to display winner
+    :return: Returns nothing
+    '''
+    def end_screen(self) -> None:
         self.frame_game.forget()
-        temp_text1 = f'Turns = {self.Logic.turn}\n\n'
-        temp_text2 = f'Score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
-        temp_text3 = f'Player 2: {self.Logic.win_count[1]} points'
+        temp_text1: str = f'Turns = {self.Logic.turn}\n\n'
+        temp_text2: str = f'Score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
+        temp_text3: str = f'Player 2: {self.Logic.win_count[1]} points'
         self.label_options.config(text=temp_text1 + temp_text2 + temp_text3 + '\n\nRestart?')
         self.button_left.config(text='Yes', command=self.start_screen)
         self.frame_options.pack(anchor='center', pady=100)

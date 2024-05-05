@@ -3,19 +3,20 @@
 # game start handled by gui.py to avoid assigning variables in logic.py in gui.py
 
 class TTTLogic:
-
-    def __init__(self):
+    # Set up initial variable states upon game startup, returns nothing
+    def __init__(self) -> None:
         self.sq = [[0, 0, 0],
                    [0, 0, 0],
                    [0, 0, 0]]
+        self.win_count = [0, 0]
         self.turn = 0
         self.player = 0
-        self.win_count = [0, 0]
         self.game_end = False
         self.temp_win = [0, 0]
         self.final_winner = None
 
-    def set_vars(self):
+    # Resets all single-game related variables, returns nothing
+    def set_vars(self) -> None:
         self.sq = [[0, 0, 0],
                    [0, 0, 0],
                    [0, 0, 0]]
@@ -24,15 +25,28 @@ class TTTLogic:
         self.game_end = False
         self.temp_win = [0, 0]
 
-    def reset_score(self):
+    # Resets cross-game turn count variable, returns nothing
+    def reset_score(self) -> None:
         self.win_count = [0, 0]
 
-    def playermove(self, row, col):
+    '''
+    Sets player move to selected grid from GUI handling, increases turn count, switches player status to allow next move
+    :self: class variables for in-game logic, adding move and switching who's going next
+    :row: Part of the 2D list of available / taken squares, taken from user selection on grid
+    :col: Second part of 2D list of available / taken squares, taken, from user selection on grid
+    :return: Returns nothing
+    '''
+    def playermove(self, row, col) -> None:
         self.turn += 1
         self.sq[row][col] = self.player
         self.player = 3 - self.player
 
-    def checkstrat(self):
+    '''
+    Used for deciding which move the computer picks in response to current game values and available squares
+    :self: Class variables - Checks which squares (from self.sq) are taken and by which player 
+    :return: Returns row and column for GUI grid square selection 
+    '''
+    def checkstrat(self) -> tuple:
         # instant win / lose conditions
         klist = [2, 1]
         # horizs
@@ -89,9 +103,14 @@ class TTTLogic:
                     # print('logic error in random select')
                     return i, k
 
-    def check_over(self):
+    '''
+    Checks whether the game is over via returns from self.gameover
+    :self: class variables and methods
+    :return: Returns numeric value based on whether player 1 or 2 have won, or whether the game is tied
+    '''
+    def check_over(self) -> int:
         if self.gameover()[0] == 1:
-            self.game_end = True
+            self.game_end: bool = True
             if self.gameover()[1] == 1:
                 return 1
             elif self.gameover()[1] == 2:
@@ -99,7 +118,13 @@ class TTTLogic:
             elif self.gameover()[1] == 3:
                 return 3
 
-    def gameover(self):
+    '''
+    Checks whether the game is ended based on available squares and checkwin method
+    :self: Class variables, square 2D list, ongoing game status, 
+    and class method checkwin to see if either player has met winning condition
+    :return: Tuple containing integer for ongoing / ended status (0 or 1) and winning player integer (1=p1, 2=p2, 3=tie)
+    '''
+    def gameover(self) -> tuple:
         check = 0
         winners = ['PLAYER 1', 'PLAYER 2', 'NOBODY']
         for row in self.sq:
@@ -119,7 +144,12 @@ class TTTLogic:
                     return 1, winner_check[i][1]
             return 0, 0
 
-    def checkwin(self, winner):
+    '''
+    Method to check whether each player has met a winning condition (3 in a row) or if all squares are filled (draw)
+    :self: class variables to see current square statuses, winner method variable to check p1 and p2 values specifically
+    :return: Return tuple containing if win condition met (0 = No, 1 = Yes) and winner value (1=p1, 2=p2, 3=None)
+    '''
+    def checkwin(self, winner) -> tuple:
         # check columns separately
         for column in range(3):
             cnt = 0
