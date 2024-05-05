@@ -72,7 +72,7 @@ def checkstrat(sq):
                 return 1, i
             elif sq[0][i] == sq[1][i] == k and sq[2][i] == 0:
                 return 2, i
-        #print('logic error not horiz or vert')
+        # print('logic error not horiz or vert')
 
         # diag
         if sq[2][2] == sq[1][1] == k and sq[0][0] == 0:
@@ -83,7 +83,7 @@ def checkstrat(sq):
             return 2, 0
         elif sq[0][0] == sq[1][1] == k and sq[2][2] == 0:
             return 2, 2
-        #print('logic error not in diag')
+        # print('logic error not in diag')
 
     # first move
     if sq[0][0] == 0:
@@ -97,17 +97,15 @@ def checkstrat(sq):
             return 2, 2
     elif sq[0][0] == 1 and sq[2][2] == 1 and sq[1][0] == 0:
         return 1, 0
-    #print('logic error not in first move')
+    # print('logic error not in first move')
 
     for i in range(3):
         for k in range(3):
             if sq[i][k] == 0:
-                #print('logic error in random select')
+                # print('logic error in random select')
                 return i, k
-
 
 
 def playermove(sq, row, col, player):
     sq[row][col] = player
     return sq
-
