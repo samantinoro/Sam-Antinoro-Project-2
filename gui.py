@@ -9,12 +9,13 @@ class Gui:
                [0, 0, 0]]
     turn = 0
     player = 0
-    wincount = [0, 0]
+    win_count = [0, 0]
     game_end = False
     gamestart = False
     pvp = False
 
     def __init__(self, window):
+        self.click_square = None
         self.window = window
         self.frame_shape = Frame(self.window)
         self.frame_shape.pack()
@@ -99,7 +100,7 @@ class Gui:
                 self.change_square(event)
                 self.player = 3 - self.player
 
-                if self.pvp == False:
+                if not self.pvp:
                     row, col = logic.checkstrat(self.squares)
                     self.squares[row][col] = 2
                     self.update_screen(row, col)
@@ -115,21 +116,19 @@ class Gui:
         logic.playermove(self.squares, row, col, self.player)
         self.update_screen(row, col)
 
-
-
     def check_over(self):
         if logic.gameover(self.squares)[0] == 1:
             self.game_end = True
             if logic.gameover(self.squares)[1] == 1:
-                print('player')
-                self.wincount[0] += 1
+                # print('player')
+                self.win_count[0] += 1
             elif logic.gameover(self.squares)[1] == 2:
                 print('cpu')
-                self.wincount[1] += 1
+                self.win_count[1] += 1
             elif logic.gameover(self.squares)[1] == 3:
                 print('draw')
 
-            print(f'Player 1 Wins: {self.wincount[0]}, Player 2: {self.wincount[1]}')
+            print(f'Player 1 Wins: {self.win_count[0]}, Player 2: {self.win_count[1]}')
 
     def update_screen(self, row, col):
         status = self.squares[row][col]
