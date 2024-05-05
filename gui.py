@@ -166,13 +166,11 @@ class Gui:
 
     def plr_start(self):
         self.frame_options.pack_forget()
-
         self.Logic.player = 1
         self.gamestart = True
 
     def cpu_start(self):
         self.frame_options.pack_forget()
-
         self.Logic.player = 2
         self.gamestart = True
         self.Logic.playermove(0, 0)
