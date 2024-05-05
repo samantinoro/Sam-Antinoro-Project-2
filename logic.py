@@ -119,16 +119,12 @@ class TTTLogic:
         self.turn += 1
         self.sq[row][col] = player
         self.player = 3 - self.player
-        return self.sq
 
     def set_vars(self):
         self.sq = [[0, 0, 0],
                    [0, 0, 0],
                    [0, 0, 0]]
         self.turn = 0
-
-    def set_sq(self, row, col, status):
-        self.sq[row][col] = status
 
     def check_over(self):
         if self.gameover()[0] == 1:

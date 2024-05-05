@@ -5,7 +5,7 @@ from logic import TTTLogic
 
 class Gui:
     gamestart = False
-    pvp = True
+    pvp = False
 
     def __init__(self, window):
         self.Logic = TTTLogic()
@@ -84,7 +84,7 @@ class Gui:
         self.label_game.pack_forget()
 
         self.gamestart = True
-        self.Logic.set_sq(0, 0, 2)
+        self.Logic.playermove(0, 0, 2)
         self.update_screen(0, 0)
         self.Logic.player = 1
 
@@ -95,9 +95,8 @@ class Gui:
 
                 if not self.pvp:
                     row, col = self.Logic.checkstrat()
-                    self.Logic.set_sq(row, col, 2)
+                    self.Logic.playermove(row, col, 2)
                     self.update_screen(row, col)
-                    self.Logic.player = 3 - self.Logic.player
                 self.Logic.check_over()
 
         except TypeError:
