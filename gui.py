@@ -94,13 +94,13 @@ class Gui:
         self.frame_options.forget()
         self.frame_title.forget()
         self.frame_sett.pack()
-
         self.button_right.forget()
 
         temp_text1 = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
         temp_text2 = f'Player 2: {self.Logic.win_count[1]} points'
         self.label_options.config(text=temp_text1 + temp_text2)
         self.button_left.config(text='Reset Score?', command=self.set_score)
+        self.button_left.pack(anchor='center', side='top')
         self.frame_options.pack()
 
     def set_score(self):
