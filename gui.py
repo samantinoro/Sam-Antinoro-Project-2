@@ -152,7 +152,6 @@ class Gui:
 
     def cpu_mode(self):
         self.pvp = False
-
         self.label_options.config(text='Would you like to go first?')
         self.button_left.config(text='Yes', command=self.plr_start)
         self.button_right.config(text='No', command=self.cpu_start)
@@ -160,7 +159,6 @@ class Gui:
 
     def plr_start(self):
         self.frame_options.pack_forget()
-
         self.Logic.player = 1
         self.gamestart = True
 
@@ -182,8 +180,7 @@ class Gui:
                     self.Logic.playermove(row, col)
                     self.update_screen(row, col)
 
-                self.Logic.temp_win = self.Logic.gameover()
-                if self.Logic.temp_win[0] == 1:
+                if self.Logic.gameover == 1:
                     raise TypeError
 
         except TypeError:
@@ -206,15 +203,6 @@ class Gui:
         self.game_boxes[row * 3 + col].configure(bg=bg_color)
 
     def end_game(self):
-        if self.Logic.temp_win[1] == 1:
-            self.Logic.win_count[0] += 1
-            self.Logic.final_winner = 'Player 1'
-        elif self.Logic.temp_win[1] == 2:
-            self.Logic.win_count[1] += 1
-            self.Logic.final_winner = 'Player 2'
-        else:
-            self.Logic.final_winner = 'NOBODY'
-
         self.gamestart = False
         self.label_options.config(text=f'{self.Logic.final_winner} WINS')
         self.button_left.config(text='See Stats', command=self.end_screen)
