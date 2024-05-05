@@ -133,7 +133,7 @@ class TTTLogic:
         if self.gameover()[0] == 1:
             self.game_end = True
             if self.gameover()[1] == 1:
-                # print('player')
+                print('player')
                 self.win_count[0] += 1
             elif self.gameover()[1] == 2:
                 print('cpu')
