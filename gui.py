@@ -127,6 +127,7 @@ class Gui:
 
         except TypeError:
             self.Logic.check_over()
+        #
 
     def change_square(self, event):
         self.click_square = event.widget
