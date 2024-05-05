@@ -12,8 +12,7 @@ class Gui:
 
     def __init__(self, window):
         self.Logic = TTTLogic()
-
-        self.click_uare = None
+        self.click_square = None
         self.window = window
         self.frame_shape = Frame(self.window)
         self.frame_shape.pack()
