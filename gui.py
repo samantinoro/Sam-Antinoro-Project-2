@@ -6,6 +6,7 @@ from logic import TTTLogic
 class Gui:
     gamestart = False
     pvp = False
+    valid_move = None
     colors = ['#FF0000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#FF00FF', '#FFFFFF']
     col_name = ['Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Pink', 'White']
 
@@ -181,10 +182,12 @@ class Gui:
             if self.gamestart and not self.Logic.game_end:
                 self.change_square(event)
 
-                if not self.pvp:
-                    row, col = self.Logic.checkstrat()
-                    self.Logic.playermove(row, col)
-                    self.update_screen(row, col)
+                while self.valid_move:
+                    if not self.pvp:
+                        row, col = self.Logic.checkstrat()
+                        self.Logic.playermove(row, col)
+                        self.update_screen(row, col)
+                    self.valid_move = False
 
                 if self.Logic.gameover()[0] == 1:
                     raise TypeError
@@ -195,8 +198,10 @@ class Gui:
     def change_square(self, event):
         self.click_square = event.widget
         row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
-        self.Logic.playermove(row, col)
-        self.update_screen(row, col)
+        if self.Logic.sq[row][col] == 0:
+            self.Logic.playermove(row, col)
+            self.update_screen(row, col)
+            self.valid_move = True
 
     def update_screen(self, row, col):
         status = self.Logic.sq[row][col]
