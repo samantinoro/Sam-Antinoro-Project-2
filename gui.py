@@ -35,30 +35,30 @@ class Gui:
                 self.game_boxes.append(self.game_box)
         self.frame_game.pack(anchor='n', pady=10)
 
-        self.frame_pvpbutt = Frame(self.window)
-        self.label_pvp = Label(self.frame_pvpbutt, font=('Ariel', 11), text='Which gamemode would you like to play?')
-        self.button_pvpyes = Button(self.frame_pvpbutt, text='Player vs Player', command=self.pvp_mode)
-        self.button_cpuyes = Button(self.frame_pvpbutt, text='Player vs Computer', command=self.cpu_mode)
+        self.frame_mode = Frame(self.window)
+        self.label_pvp = Label(self.frame_mode, font=('Ariel', 11), text='Which game mode would you like to play?')
+        self.button_pvp = Button(self.frame_mode, text='Player vs Player', command=self.pvp_mode)
+        self.button_pvcpu = Button(self.frame_mode, text='Player vs Computer', command=self.cpu_mode)
 
         self.label_pvp.pack(side='top')
-        self.button_pvpyes.pack(side='left')
-        self.button_cpuyes.pack(side='right')
-        self.frame_pvpbutt.pack(side='top', pady=10)
+        self.button_pvp.pack(side='left')
+        self.button_pvcpu.pack(side='right')
+        self.frame_mode.pack(side='top', pady=10)
 
-        self.frame_cpubutt = Frame(self.window)
-        self.label_game = Label(self.frame_cpubutt, font=('Ariel', 11), text='Would you like to go first?')
-        self.button_yes = Button(self.frame_cpubutt, text='Yes', command=self.plr_start)
-        self.button_no = Button(self.frame_cpubutt, text='No', command=self.cpu_start)
+        self.frame_order = Frame(self.window)
+        self.label_game = Label(self.frame_order, font=('Ariel', 11), text='Would you like to go first?')
+        self.button_p_first = Button(self.frame_order, text='Yes', command=self.plr_start)
+        self.button_cpu_first = Button(self.frame_order, text='No', command=self.cpu_start)
 
         self.label_game.pack(side='top', pady=10)
-        self.button_yes.pack(side='left')
-        self.button_no.pack(side='right')
-        self.frame_pvpbutt.pack(anchor='n')
-        self.frame_cpubutt.pack(anchor='n')
+        self.button_p_first.pack(side='left')
+        self.button_cpu_first.pack(side='right')
+        self.frame_mode.pack(anchor='n')
+        self.frame_order.pack(anchor='n')
 
         self.frame_game.pack_forget()
-        self.frame_pvpbutt.pack_forget()
-        self.frame_cpubutt.pack_forget()
+        self.frame_mode.pack_forget()
+        self.frame_order.pack_forget()
 
         # end screen
         self.frame_end = Frame(self.window)
@@ -77,36 +77,36 @@ class Gui:
         self.frame_title.pack_forget()
         self.frame_end.pack_forget()
         self.frame_game.pack_forget()
-        self.frame_cpubutt.forget()
+        self.frame_order.forget()
 
         self.frame_game.pack()
         for game_box in self.game_boxes:
             game_box.config(bg='white')
 
         self.Logic.set_vars()
-        self.frame_pvpbutt.pack()
+        self.frame_mode.pack()
 
     def pvp_mode(self):
         self.pvp = True
-        self.frame_pvpbutt.pack_forget()
+        self.frame_mode.pack_forget()
         self.plr_start()
 
     def cpu_mode(self):
         self.pvp = False
-        self.frame_pvpbutt.pack_forget()
-        self.frame_cpubutt.pack()
+        self.frame_mode.pack_forget()
+        self.frame_order.pack()
 
     def plr_start(self):
-        self.button_yes.pack_forget()
-        self.button_no.pack_forget()
+        self.button_p_first.pack_forget()
+        self.button_cpu_first.pack_forget()
         self.label_game.pack_forget()
 
         self.Logic.player = 1
         self.gamestart = True
 
     def cpu_start(self):
-        self.button_yes.pack_forget()
-        self.button_no.pack_forget()
+        self.button_p_first.pack_forget()
+        self.button_cpu_first.pack_forget()
         self.label_game.pack_forget()
 
         self.Logic.player = 2
@@ -127,7 +127,6 @@ class Gui:
 
         except TypeError:
             self.Logic.check_over()
-        #
 
     def change_square(self, event):
         self.click_square = event.widget
