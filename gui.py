@@ -47,7 +47,7 @@ class Gui:
         self.button_left = Button(self.frame_options)
         self.button_right = Button(self.frame_options)
 
-        self.label_options.pack(side='top',pady=10)
+        self.label_options.pack(side='top', pady=10)
         self.button_left.pack(side='left')
         self.button_right.pack(side='right')
         self.frame_options.pack(side='top', pady=10)
@@ -108,7 +108,6 @@ class Gui:
         temp_text1 = f'Current score:\nPlayer 1: {self.Logic.win_count[0]} points\n'
         temp_text2 = f'Player 2: {self.Logic.win_count[1]} points'
         self.label_options.config(text=temp_text1 + temp_text2)
-
 
     def choose_p1(self, cval):
         cval = int(cval)

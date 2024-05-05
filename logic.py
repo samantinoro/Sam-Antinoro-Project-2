@@ -98,7 +98,6 @@ class TTTLogic:
             elif self.gameover()[1] == 3:
                 return 3
 
-
     def gameover(self):
         check = 0
         winners = ['Player 1', 'Player 2', 'NOBODY']
