@@ -1,6 +1,7 @@
 # logic for tic-tac-toe game. Modified from code I finished on February-20-2024
-# new and improved tic-tac-toe
-# and using just generally better code :)
+# handles all logic relating to input in the game.
+# game start handled by gui.py to avoid assigning variables in logic.py in gui.py
+
 class TTTLogic:
 
     def __init__(self):
