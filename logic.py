@@ -11,12 +11,16 @@ class TTTLogic:
         self.player = 0
         self.win_count = [0, 0]
         self.game_end = False
+        self.tempwin = [0,0]
 
     def set_vars(self):
         self.sq = [[0, 0, 0],
                    [0, 0, 0],
                    [0, 0, 0]]
         self.turn = 0
+        self.player = 0
+        self.game_end = False
+        self.tempwin = [0,0]
 
     def playermove(self, row, col):
         self.turn += 1
@@ -85,13 +89,13 @@ class TTTLogic:
         if self.gameover()[0] == 1:
             self.game_end = True
             if self.gameover()[1] == 1:
-                print('player')
+                return 1
                 self.win_count[0] += 1
             elif self.gameover()[1] == 2:
-                print('cpu')
+                return 2
                 self.win_count[1] += 1
             elif self.gameover()[1] == 3:
-                print('draw')
+                return 3
 
             print(f'Player 1 Wins: {self.win_count[0]}, Player 2: {self.win_count[1]}')
 
@@ -101,11 +105,13 @@ class TTTLogic:
             if 0 not in row:
                 check += 1
         if check == 3:
+            self.game_end = True
             return 1, 3
         else:
             winner_check = [self.checkwin(1), self.checkwin(2)]
             for i in range(2):
                 if 1 in winner_check[i]:
+                    self.game_end = True
                     return 1, winner_check[i][1]
             return 0, 0
 
