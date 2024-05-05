@@ -4,9 +4,13 @@
 class TTTLogic:
 
     def __init__(self):
-        self.sq = []
+        self.sq = [[0, 0, 0],
+                   [0, 0, 0],
+                   [0, 0, 0]]
         self.turn = 0
         self.player = 0
+        self.win_count = [0, 0]
+        self.game_end = False
 
     def checkwin(self, x):
         winner = None
@@ -124,3 +128,17 @@ class TTTLogic:
 
     def set_sq(self, row, col, status):
         self.sq[row][col] = status
+
+    def check_over(self):
+        if self.gameover()[0] == 1:
+            self.game_end = True
+            if self.gameover()[1] == 1:
+                # print('player')
+                self.win_count[0] += 1
+            elif self.gameover()[1] == 2:
+                print('cpu')
+                self.win_count[1] += 1
+            elif self.gameover()[1] == 3:
+                print('draw')
+
+            print(f'Player 1 Wins: {self.win_count[0]}, Player 2: {self.win_count[1]}')
