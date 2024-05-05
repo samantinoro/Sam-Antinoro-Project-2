@@ -1,13 +1,9 @@
 # tic-tac-toe GUI
 from tkinter import *
-import logic
+from logic import TTTLogic
 
 
 class Gui:
-    squares = [[0, 0, 0],
-               [0, 0, 0],
-               [0, 0, 0]]
-    turn = 0
     player = 0
     win_count = [0, 0]
     game_end = False
@@ -15,7 +11,9 @@ class Gui:
     pvp = False
 
     def __init__(self, window):
-        self.click_square = None
+        self.Logic = TTTLogic()
+
+        self.click_uare = None
         self.window = window
         self.frame_shape = Frame(self.window)
         self.frame_shape.pack()
@@ -73,6 +71,7 @@ class Gui:
         for game_box in self.game_boxes:
             game_box.config(bg='white')
 
+        self.Logic.set_vars()
         self.frame_buttons.pack()
 
     def plr_start(self):
@@ -89,20 +88,19 @@ class Gui:
         self.label_game.pack_forget()
 
         self.gamestart = True
-        self.squares[0][0] = 2
+        self.Logic.set_sq(0, 0, 2)
         self.update_screen(0, 0)
         self.player = 1
 
     def square_clicked(self, event):
         try:
             if self.gamestart and not self.game_end:
-                self.turn += 1
                 self.change_square(event)
                 self.player = 3 - self.player
 
                 if not self.pvp:
-                    row, col = logic.checkstrat(self.squares)
-                    self.squares[row][col] = 2
+                    row, col = self.Logic.checkstrat()
+                    self.Logic.set_sq(row, col, 2)
                     self.update_screen(row, col)
                     self.player = 3 - self.player
                 self.check_over()
@@ -113,25 +111,25 @@ class Gui:
     def change_square(self, event):
         self.click_square = event.widget
         row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
-        logic.playermove(self.squares, row, col, self.player)
+        self.Logic.playermove(row, col, self.player)
         self.update_screen(row, col)
 
     def check_over(self):
-        if logic.gameover(self.squares)[0] == 1:
+        if self.Logic.gameover()[0] == 1:
             self.game_end = True
-            if logic.gameover(self.squares)[1] == 1:
+            if self.Logic.gameover()[1] == 1:
                 # print('player')
                 self.win_count[0] += 1
-            elif logic.gameover(self.squares)[1] == 2:
+            elif self.Logic.gameover()[1] == 2:
                 print('cpu')
                 self.win_count[1] += 1
-            elif logic.gameover(self.squares)[1] == 3:
+            elif self.Logic.gameover()[1] == 3:
                 print('draw')
 
             print(f'Player 1 Wins: {self.win_count[0]}, Player 2: {self.win_count[1]}')
 
     def update_screen(self, row, col):
-        status = self.squares[row][col]
+        status = self.Logic.sq[row][col]
         if status == 1:
             bg_color = 'blue'
         elif status == 2:

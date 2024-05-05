@@ -1,111 +1,125 @@
 # logic for tic-tac-toe game. Modified from code I finished on February-20-2024
 # new and improved tic-tac-toe
 # and using just generally better code :)
-def checkwin(sq, x):
-    winner = ''
+class TTTLogic:
 
-    if x == 1:
-        winner = 1
-    elif x == 2:
-        winner = 2
+    def __init__(self):
+        self.sq = []
+        self.turn = 0
 
-    # have to check columns separately
-    cnt = 0
-    for column in range(3):
+    def checkwin(self, x):
+        winner = None
+
+        if x == 1:
+            winner = 1
+        elif x == 2:
+            winner = 2
+
+        # have to check columns separately
         cnt = 0
-        for row in range(3):
-            mem = sq[row][column]
-            if mem == x:
-                cnt += 1
-            if cnt == 3:
-                return 1, winner
+        for column in range(3):
+            cnt = 0
+            for row in range(3):
+                mem = self.sq[row][column]
+                if mem == x:
+                    cnt += 1
+                if cnt == 3:
+                    return 1, winner
 
-    if [x, x, x] in sq:
-        return 1, winner
-    elif x == sq[0][0] == sq[1][1] == sq[2][2]:
-        return 1, winner
-    elif x == sq[0][2] == sq[1][1] == sq[2][0]:
-        return 1, winner
-    elif cnt == 3:
-        return 1, winner
-    else:
-        return 0, 3
+        if [x, x, x] in self.sq:
+            return 1, winner
+        elif x == self.sq[0][0] == self.sq[1][1] == self.sq[2][2]:
+            return 1, winner
+        elif x == self.sq[0][2] == self.sq[1][1] == self.sq[2][0]:
+            return 1, winner
+        elif cnt == 3:
+            return 1, winner
+        else:
+            return 0, 3
 
+    def gameover(self):
+        check = 0
+        for row in self.sq:
+            if 0 not in row:
+                check += 1
+        if check == 3:
+            return 1, 3
 
-def gameover(sq):
-    check = 0
-    for row in sq:
-        if 0 not in row:
-            check += 1
-    if check == 3:
-        return 1, 3
-
-    else:
-        liste = [checkwin(sq, 1), checkwin(sq, 2)]
-        for i in range(2):
-            if 1 in liste[i]:
-                return 1, liste[i][1]
-        return 0, 0
-
-
-def checkstrat(sq):
-    # instant win / lose conditions
-    klist = [2, 1]
-    # horizs
-    for k in klist:
-        if sq[0][0] == 0:
+        else:
+            liste = [self.checkwin(1), self.checkwin(2)]
+            for i in range(2):
+                if 1 in liste[i]:
+                    return 1, liste[i][1]
             return 0, 0
+
+    def checkstrat(self):
+        self.turn += 1
+        # instant win / lose conditions
+        klist = [2, 1]
+        # horizs
+        for k in klist:
+            if self.sq[0][0] == 0:
+                return 0, 0
+
+            for i in range(3):
+                # horiz
+                if [0, k, k] == self.sq[i]:
+                    return i, 0
+                elif [k, 0, k] == self.sq[i]:
+                    return i, 1
+                elif [k, k, 0] == self.sq[i]:
+                    return i, 2
+
+                # verts
+                if self.sq[1][i] == self.sq[2][i] == k and self.sq[0][i] == 0:
+                    return 0, i
+                elif self.sq[0][i] == self.sq[2][i] == k and self.sq[1][i] == 0:
+                    return 1, i
+                elif self.sq[0][i] == self.sq[1][i] == k and self.sq[2][i] == 0:
+                    return 2, i
+            # print('logic error not horiz or vert')
+
+            # diag
+            if self.sq[2][2] == self.sq[1][1] == k and self.sq[0][0] == 0:
+                return 0, 0
+            elif self.sq[2][0] == self.sq[1][1] == k and self.sq[0][2] == 0:
+                return 0, 2
+            elif self.sq[0][2] == self.sq[1][1] == k and self.sq[2][0] == 0:
+                return 2, 0
+            elif self.sq[0][0] == self.sq[1][1] == k and self.sq[2][2] == 0:
+                return 2, 2
+            # print('logic error not in diag')
+
+        # first move
+        if self.sq[0][0] == 0:
+            return 0, 0
+        elif self.sq[0][0] != 0 and self.sq[1][1] == 0 and self.sq[2][2] != 1:
+            return 1, 1
+        elif self.sq[0][0] == 2:
+            if self.sq[2][2] == 0:
+                return 2, 2
+            elif self.sq[1][1] == 1 and self.sq[2][2] == 0:
+                return 2, 2
+        elif self.sq[0][0] == 1 and self.sq[2][2] == 1 and self.sq[1][0] == 0:
+            return 1, 0
+        # print('logic error not in first move')
 
         for i in range(3):
-            # horiz
-            if [0, k, k] == sq[i]:
-                return i, 0
-            elif [k, 0, k] == sq[i]:
-                return i, 1
-            elif [k, k, 0] == sq[i]:
-                return i, 2
+            for k in range(3):
+                if self.sq[i][k] == 0:
+                    # print('logic error in random select')
+                    return i, k
 
-            # verts
-            if sq[1][i] == sq[2][i] == k and sq[0][i] == 0:
-                return 0, i
-            elif sq[0][i] == sq[2][i] == k and sq[1][i] == 0:
-                return 1, i
-            elif sq[0][i] == sq[1][i] == k and sq[2][i] == 0:
-                return 2, i
-        # print('logic error not horiz or vert')
+    def playermove(self, row, col, player):
+        self.turn += 1
+        self.sq[row][col] = player
+        return self.sq
 
-        # diag
-        if sq[2][2] == sq[1][1] == k and sq[0][0] == 0:
-            return 0, 0
-        elif sq[2][0] == sq[1][1] == k and sq[0][2] == 0:
-            return 0, 2
-        elif sq[0][2] == sq[1][1] == k and sq[2][0] == 0:
-            return 2, 0
-        elif sq[0][0] == sq[1][1] == k and sq[2][2] == 0:
-            return 2, 2
-        # print('logic error not in diag')
+    def set_vars(self):
+        self.sq = [[0, 0, 0],
+                   [0, 0, 0],
+                   [0, 0, 0]]
+        self.turn = 0
 
-    # first move
-    if sq[0][0] == 0:
-        return 0, 0
-    elif sq[0][0] != 0 and sq[1][1] == 0 and sq[2][2] != 1:
-        return 1, 1
-    elif sq[0][0] == 2:
-        if sq[2][2] == 0:
-            return 2, 2
-        elif sq[1][1] == 1 and sq[2][2] == 0:
-            return 2, 2
-    elif sq[0][0] == 1 and sq[2][2] == 1 and sq[1][0] == 0:
-        return 1, 0
-    # print('logic error not in first move')
-
-    for i in range(3):
-        for k in range(3):
-            if sq[i][k] == 0:
-                # print('logic error in random select')
-                return i, k
-
-
-def playermove(sq, row, col, player):
-    sq[row][col] = player
-    return sq
+    def set_sq(self, row, col, status):
+        self.sq[row][col] = status
