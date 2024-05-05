@@ -1,6 +1,7 @@
-# projet 2 main file.
-
+# project 2 main file.
 from gui import *
+
+
 def main():
     window = Tk()
     window.title('Tic Tac Toe')
