@@ -46,10 +46,10 @@ class TTTLogic:
             return 1, 3
 
         else:
-            liste = [self.checkwin(1), self.checkwin(2)]
+            win_conditions = [self.checkwin(1), self.checkwin(2)]
             for i in range(2):
-                if 1 in liste[i]:
-                    return 1, liste[i][1]
+                if 1 in win_conditions[i]:
+                    return 1, win_conditions[i][1]
             return 0, 0
 
     def checkstrat(self):
