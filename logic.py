@@ -100,13 +100,13 @@ class TTTLogic:
 
     def gameover(self):
         check = 0
-        winners = ['Player 1', 'Player 2', 'NOBODY']
+        winners = ['PLAYER 1', 'PLAYER 2', 'NOBODY']
         for row in self.sq:
             if 0 not in row:
                 check += 1
         if check == 3:
             self.game_end = True
-            self.final_winner = 'NOBODY'
+            self.final_winner = winners[2]
             return 1, 3
         else:
             winner_check = [self.checkwin(1), self.checkwin(2)]
