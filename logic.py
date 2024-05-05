@@ -37,7 +37,7 @@ class TTTLogic:
                 return 0, 0
 
             for i in range(3):
-                # horiz
+                # Horiz
                 if [0, k, k] == self.sq[i]:
                     return i, 0
                 elif [k, 0, k] == self.sq[i]:
@@ -45,7 +45,7 @@ class TTTLogic:
                 elif [k, k, 0] == self.sq[i]:
                     return i, 2
 
-                # verts
+                # Verts
                 if self.sq[1][i] == self.sq[2][i] == k and self.sq[0][i] == 0:
                     return 0, i
                 elif self.sq[0][i] == self.sq[2][i] == k and self.sq[1][i] == 0:
