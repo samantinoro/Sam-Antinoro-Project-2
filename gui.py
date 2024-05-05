@@ -4,7 +4,6 @@ from logic import TTTLogic
 
 
 class Gui:
-    player = 0
     win_count = [0, 0]
     game_end = False
     gamestart = False
@@ -79,7 +78,7 @@ class Gui:
         self.label_game.pack_forget()
 
         self.gamestart = True
-        self.player = 1
+        self.Logic.player = 1
 
     def cpu_start(self):
         self.button_yes.pack_forget()
@@ -89,19 +88,19 @@ class Gui:
         self.gamestart = True
         self.Logic.set_sq(0, 0, 2)
         self.update_screen(0, 0)
-        self.player = 1
+        self.Logic.player = 1
 
     def square_clicked(self, event):
         try:
             if self.gamestart and not self.game_end:
                 self.change_square(event)
-                self.player = 3 - self.player
+                self.Logic.player = 3 - self.Logic.player
 
                 if not self.pvp:
                     row, col = self.Logic.checkstrat()
                     self.Logic.set_sq(row, col, 2)
                     self.update_screen(row, col)
-                    self.player = 3 - self.player
+                    self.Logic.player = 3 - self.Logic.player
                 self.check_over()
 
         except TypeError:
@@ -110,7 +109,7 @@ class Gui:
     def change_square(self, event):
         self.click_square = event.widget
         row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
-        self.Logic.playermove(row, col, self.player)
+        self.Logic.playermove(row, col, self.Logic.player)
         self.update_screen(row, col)
 
     def check_over(self):

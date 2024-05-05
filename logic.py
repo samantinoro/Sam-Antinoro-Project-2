@@ -6,6 +6,7 @@ class TTTLogic:
     def __init__(self):
         self.sq = []
         self.turn = 0
+        self.player = 0
 
     def checkwin(self, x):
         winner = None
