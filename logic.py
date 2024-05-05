@@ -121,7 +121,6 @@ class TTTLogic:
 
     def checkwin(self, winner):
         # check columns separately
-        cnt = 0
         for column in range(3):
             cnt = 0
             for row in range(3):
