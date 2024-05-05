@@ -35,6 +35,7 @@ class Gui:
                 self.game_boxes.append(self.game_box)
         self.frame_game.pack(anchor='n', pady=10)
 
+        # Select PvP or PvCPU
         self.frame_mode = Frame(self.window)
         self.label_pvp = Label(self.frame_mode, font=('Ariel', 11), text='Which game mode would you like to play?')
         self.button_pvp = Button(self.frame_mode, text='Player vs Player', command=self.pvp_mode)
@@ -45,6 +46,7 @@ class Gui:
         self.button_pvcpu.pack(side='right')
         self.frame_mode.pack(side='top', pady=10)
 
+        # PvCPU: Pick who goes first
         self.frame_order = Frame(self.window)
         self.label_game = Label(self.frame_order, font=('Ariel', 11), text='Would you like to go first?')
         self.button_p_first = Button(self.frame_order, text='Yes', command=self.plr_start)
@@ -60,7 +62,7 @@ class Gui:
         self.frame_mode.pack_forget()
         self.frame_order.pack_forget()
 
-        # end screen
+        # Set up End / Stats Screen
         self.frame_end = Frame(self.window)
         self.label_end = Label(self.frame_end, font=('Ariel', 12), text='GAME OVER')
         self.label_result = Label(self.frame_end, font=('Ariel', 12), text='The winner is...')
