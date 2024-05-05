@@ -5,25 +5,25 @@
 class TTTLogic:
     # Set up initial variable states upon game startup, returns nothing
     def __init__(self) -> None:
-        self.sq = [[0, 0, 0],
-                   [0, 0, 0],
-                   [0, 0, 0]]
-        self.win_count = [0, 0]
-        self.turn = 0
-        self.player = 0
-        self.game_end = False
-        self.temp_win = [0, 0]
-        self.final_winner = None
+        self.sq: list = [[0, 0, 0],
+                         [0, 0, 0],
+                         [0, 0, 0]]
+        self.win_count: list = [0, 0]
+        self.turn: int = 0
+        self.player: int = 0
+        self.game_end: bool = False
+        self.temp_win: list = [0, 0]
+        self.final_winner: str = ''
 
     # Resets all single-game related variables, returns nothing
     def set_vars(self) -> None:
         self.sq = [[0, 0, 0],
                    [0, 0, 0],
                    [0, 0, 0]]
-        self.turn = 0
-        self.player = 0
-        self.game_end = False
-        self.temp_win = [0, 0]
+        self.turn: int = 0
+        self.player: int = 0
+        self.game_end: bool = False
+        self.temp_win: list = [0, 0]
 
     # Resets cross-game turn count variable, returns nothing
     def reset_score(self) -> None:
@@ -38,8 +38,8 @@ class TTTLogic:
     '''
     def playermove(self, row, col) -> None:
         self.turn += 1
-        self.sq[row][col] = self.player
-        self.player = 3 - self.player
+        self.sq[row][col]: int = self.player
+        self.player: int = 3 - self.player
 
     '''
     Used for deciding which move the computer picks in response to current game values and available squares
@@ -48,7 +48,7 @@ class TTTLogic:
     '''
     def checkstrat(self) -> tuple:
         # instant win / lose conditions
-        klist = [2, 1]
+        klist: list = [2, 1]
         # horizs
         for k in klist:
             if self.sq[0][0] == 0:
@@ -125,36 +125,36 @@ class TTTLogic:
     :return: Tuple containing integer for ongoing / ended status (0 or 1) and winning player integer (1=p1, 2=p2, 3=tie)
     '''
     def gameover(self) -> tuple:
-        check = 0
-        winners = ['PLAYER 1', 'PLAYER 2', 'NOBODY']
+        check: int = 0
+        winners: list = ['PLAYER 1', 'PLAYER 2', 'NOBODY']
         for row in self.sq:
             if 0 not in row:
                 check += 1
         if check == 3:
-            self.game_end = True
-            self.final_winner = winners[2]
+            self.game_end: bool = True
+            self.final_winner: str = winners[2]
             return 1, 3
         else:
-            winner_check = [self.checkwin(1), self.checkwin(2)]
+            winner_check: list = [self.checkwin(1), self.checkwin(2)]
             for i in range(2):
                 if 1 in winner_check[i]:
-                    self.game_end = True
+                    self.game_end: bool = True
                     self.win_count[i] += 1
-                    self.final_winner = winners[i]
+                    self.final_winner: str = winners[i]
                     return 1, winner_check[i][1]
             return 0, 0
 
     '''
     Method to check whether each player has met a winning condition (3 in a row) or if all squares are filled (draw)
-    :self: class variables to see current square statuses, winner method variable to check p1 and p2 values specifically
+    :self: class variables to see current square statuses, winner method int var to check p1 and p2 values specifically
     :return: Return tuple containing if win condition met (0 = No, 1 = Yes) and winner value (1=p1, 2=p2, 3=None)
     '''
-    def checkwin(self, winner) -> tuple:
+    def checkwin(self, winner: int) -> tuple:
         # check columns separately
         for column in range(3):
-            cnt = 0
+            cnt: int = 0
             for row in range(3):
-                mem = self.sq[row][column]
+                mem: int = self.sq[row][column]
                 if mem == winner:
                     cnt += 1
                 if cnt == 3:

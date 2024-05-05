@@ -17,7 +17,7 @@ class Gui:
         self.color_p2: str = self.colors[0]
 
         self.Logic = TTTLogic()
-        self.click_square = None
+        self.click_square = Widget
 
         self.window = window
         self.frame_shape = Frame(self.window)
@@ -133,10 +133,10 @@ class Gui:
     :return: does not return
     '''
     def choose_p1(self, cval) -> None:
-        cval = int(cval)
+        cval: int = int(cval)
         self.label_col1.config(text=self.col_name[cval])
         if self.colors[cval] != self.color_p2:
-            self.color_p1 = self.colors[cval]
+            self.color_p1: str = self.colors[cval]
             self.label_sett_err.forget()
             self.butt_exit.pack(pady=20)
         else:
@@ -150,10 +150,10 @@ class Gui:
     :return: does not return
     '''
     def choose_p2(self, cval) -> None:
-        cval = int(cval)
+        cval: int = int(cval)
         self.label_col2.config(text=self.col_name[cval])
         if self.colors[cval] != self.color_p1:
-            self.color_p2 = self.colors[cval]
+            self.color_p2: str = self.colors[cval]
             self.label_sett_err.forget()
             self.butt_exit.pack(pady=20)
         else:
@@ -236,7 +236,7 @@ class Gui:
     :event: Tkinter event handling. This method goes when event -- grid square is clicked
     :return: Returns nothing
     '''
-    def square_clicked(self, event) -> None:
+    def square_clicked(self, event: Event) -> None:
         try:
             if self.gamestart and not self.Logic.game_end:
                 self.change_square(event)
@@ -259,8 +259,8 @@ class Gui:
     :self: GUI events and grid elements, Logic methods to update in game values, class variable to ensure proper move
     :return: Returns nothing
     '''
-    def change_square(self, event) -> None:
-        self.click_square = event.widget
+    def change_square(self, event: Event) -> None:
+        self.click_square: Widget = event.widget
         row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
         if self.Logic.sq[row][col] == 0:
             self.Logic.playermove(row, col)
@@ -272,7 +272,7 @@ class Gui:
     :self: Logic methods to check square values, GUI grid elements to update grid
     :return: Returns nothing 
     '''
-    def update_screen(self, row, col) -> None:
+    def update_screen(self, row: int, col: int) -> None:
         status: int = self.Logic.sq[row][col]
         if status == 1:
             bg_color = self.color_p1
