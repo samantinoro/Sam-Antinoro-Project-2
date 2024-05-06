@@ -127,6 +127,7 @@ class TTTLogic:
     def gameover(self) -> tuple:
         check: int = 0
         winners: list = ['PLAYER 1', 'PLAYER 2', 'NOBODY']
+
         for row in self.sq:
             if 0 not in row:
                 check += 1

@@ -266,6 +266,8 @@ class Gui:
             self.Logic.playermove(row, col)
             self.update_screen(row, col)
             self.valid_move: bool = True
+            if self.Logic.gameover()[0] == 1:
+                raise TypeError
 
     '''
     Function to update the visuals of the grid once a move has been made.
