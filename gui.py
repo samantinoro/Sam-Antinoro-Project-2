@@ -82,7 +82,6 @@ class Gui:
 
     '''
     Packs title Screen Elements and makes other frames invisible
-    :self: GUI frames
     :return: Does not return anything
     '''
     def start_screen(self) -> None:
@@ -92,7 +91,6 @@ class Gui:
 
     '''
     Loads settings frame / menu elements, packs options label for more information
-    :self: GUI frames and elements, variable to check color selection lists
     :return: No return variables
     '''
     def load_sett(self) -> None:
@@ -117,8 +115,7 @@ class Gui:
         self.frame_options.pack()
 
     '''
-    Resets cross-game score value via settings menu
-    :self: GUI elements, color variables, and Logic reset_score() function
+    Resets cross-game score variable value via settings menu
     :return: returns nothing
     '''
     def set_score(self) -> None:
@@ -129,7 +126,6 @@ class Gui:
 
     '''
     Changes Player 1 color value to user selection from scale
-    :self: GUI elements, color variables
     :return: does not return
     '''
     def choose_p1(self, cval) -> None:
@@ -146,7 +142,6 @@ class Gui:
 
     '''
     Changes Player 2 color value to user selection from scale
-    :self: GUI elements, color variables
     :return: does not return
     '''
     def choose_p2(self, cval) -> None:
@@ -163,7 +158,6 @@ class Gui:
 
     '''
     Loads game GUI frame and elements - game mode buttons, game grid
-    :self: GUI elements, grid, methods
     :return: nothing
     '''
     def load_game(self) -> None:
@@ -186,7 +180,6 @@ class Gui:
 
     '''
     Sets game mode to Player vs Player, starts game with player 1, disappears frame
-    :self: GUI frame, class method
     :return: Returns nothing
     '''
     def pvp_mode(self) -> None:
@@ -196,7 +189,6 @@ class Gui:
 
     '''
     Sets game to Player vs CPU, sets buttons to ask who's going first
-    :self: GUI frame and elements, class methods
     :return: Returns nothing
     '''
     def cpu_mode(self) -> None:
@@ -209,7 +201,6 @@ class Gui:
 
     '''
     Method for when Player 1 starts, sets game to start
-    :self: GUI frame, init variable to allow player to interact with grid
     :return: Returns nothing
     '''
     def plr_start(self) -> None:
@@ -218,8 +209,7 @@ class Gui:
         self.gamestart: bool = True
 
     '''
-    Method for when the Computer starts, sets game to start, selects first move
-    :self: GUI frame, Logic methods to select square, class method to update grid
+    Method for when the Computer starts, sets game to start, selects cpu's first move
     :return: Returns nothing
     '''
     def cpu_start(self) -> None:
@@ -230,9 +220,7 @@ class Gui:
         self.update_screen(0, 0)
 
     '''
-    Method for processing when a grid square is clicked when the game is ongoing
-    :self: GUI elements, Logic method to handle in-game moves and check game / win status, 
-    class variable to allow CPU to move if player's move was valid, class method to update screen, 
+    Method for when a grid square is clicked, logic methods change square values
     :event: Tkinter event handling. This method goes when event -- grid square is clicked
     :return: Returns nothing
     '''
@@ -255,8 +243,7 @@ class Gui:
             self.end_game()
 
     '''
-    Function for actually selecting and changing a square on a player's move
-    :self: GUI events and grid elements, Logic methods to update in game values, class variable to ensure proper move
+    Method for selecting / changing square on a player's move, ensures valid move
     :return: Returns nothing
     '''
     def change_square(self, event: Event) -> None:
@@ -271,7 +258,6 @@ class Gui:
 
     '''
     Function to update the visuals of the grid once a move has been made.
-    :self: Logic methods to check square values, GUI grid elements to update grid
     :return: Returns nothing 
     '''
     def update_screen(self, row: int, col: int) -> None:
@@ -286,7 +272,6 @@ class Gui:
 
     '''
     Method to halt GUI upon end of the game and allow option to see end screen
-    :self: GUI frames and elements, Logic method to check end state and winner
     :return: Returns nothing
     '''
     def end_game(self) -> None:
@@ -300,7 +285,6 @@ class Gui:
 
     '''
     Makes Game frame invisible and packs End Screen and related Option frame element
-    :self: GUI frames and elements, Logic method to display winner
     :return: Returns nothing
     '''
     def end_screen(self) -> None:
