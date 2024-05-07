@@ -82,7 +82,7 @@ class Gui:
 
     '''
     Packs title Screen Elements and makes other frames invisible
-    :return: Does not return anything
+    :return: Returns nothing
     '''
     def start_screen(self) -> None:
         self.frame_options.forget()
@@ -91,7 +91,7 @@ class Gui:
 
     '''
     Loads settings frame / menu elements, packs options label for more information
-    :return: No return variables
+    :return: Returns nothing
     '''
     def load_sett(self) -> None:
         p1: int = self.colors.index(self.color_p1)
@@ -116,7 +116,7 @@ class Gui:
 
     '''
     Resets cross-game score variable value via settings menu
-    :return: returns nothing
+    :return: Returns nothing
     '''
     def set_score(self) -> None:
         self.Logic.reset_score()
@@ -126,7 +126,7 @@ class Gui:
 
     '''
     Changes Player 1 color value to user selection from scale
-    :return: does not return
+    :return: Returns nothing
     '''
     def choose_p1(self, cval) -> None:
         cval: int = int(cval)
@@ -142,7 +142,7 @@ class Gui:
 
     '''
     Changes Player 2 color value to user selection from scale
-    :return: does not return
+    :return: Returns nothing
     '''
     def choose_p2(self, cval) -> None:
         cval: int = int(cval)

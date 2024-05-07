@@ -42,7 +42,7 @@ class TTTLogic:
 
     '''
     Decides which move the computer picks based on current game values / square statuses
-    :return: Returns row and column for GUI grid square selection 
+    :return: Returns row and column for grid square selection in GUI
     '''
     def checkstrat(self) -> tuple:
         # instant win / lose conditions
@@ -103,7 +103,7 @@ class TTTLogic:
 
     '''
     Checks whether the game is over via returns from self.gameover
-    :return: Returns numeric value based on whether player 1 or 2 have won, or whether the game is tied
+    :return: Returns numeric winner value (p1=1, p2=2, draw=3)
     '''
     def check_over(self) -> int:
         if self.gameover()[0] == 1:
@@ -117,7 +117,7 @@ class TTTLogic:
 
     '''
     Checks whether the game is ended based on square statuses and checkwin method
-    :return: Tuple containing integer for ongoing / ended status (0 or 1) and winning player integer (1=p1, 2=p2, 3=tie)
+    :return: Tuple containing integer for ongoing / ended status (No=0,Yes=1) and winning player int (p1=1, p2=2, tie=3)
     '''
     def gameover(self) -> tuple:
         check: int = 0
@@ -142,7 +142,7 @@ class TTTLogic:
 
     '''
     Method to check whether either player has met a winning condition (3 in a row) or if all squares are filled (draw)
-    :return: Return tuple containing if win condition met (0 = No, 1 = Yes) and winner value (1=p1, 2=p2, 3=None)
+    :return: Return tuple containing if win condition met (No=0, Yes=1) and winner value (1=p1, 2=p2, 3=None)
     '''
     def checkwin(self, winner: int) -> tuple:
         # check columns separately
