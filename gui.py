@@ -158,7 +158,7 @@ class Gui:
 
     '''
     Loads game GUI frame and elements - game mode buttons, game grid
-    :return: nothing
+    :return: Returns nothing
     '''
     def load_game(self) -> None:
         self.Logic.set_vars()
@@ -169,7 +169,7 @@ class Gui:
 
         self.frame_game.pack()
         for game_box in self.game_boxes:
-            game_box.config(bg='white')
+            game_box.config(bg='#FFFFFF')
 
         self.label_options.config(text='Which game mode would you like to play?')
         self.button_left.config(text='Player vs Player', command=self.pvp_mode)
@@ -226,19 +226,23 @@ class Gui:
     '''
     def square_clicked(self, event: Event) -> None:
         try:
+            # Makes sure the game is still going
             if self.gamestart and not self.Logic.game_end:
                 self.change_square(event)
 
+                # Ensures player 2 can only move if the player made a valid move
                 while self.valid_move:
+                    # If the game isn't in PVP, selects computer's move
                     if not self.pvp:
                         row, col = self.Logic.checkstrat()
                         self.Logic.playermove(row, col)
                         self.update_screen(row, col)
                     self.valid_move: bool = False
 
+                # Check for a winner, defer to check end method
                 if self.Logic.gameover()[0] == 1:
                     raise TypeError
-
+        # Also catches if all the squares are filled up
         except TypeError:
             self.end_game()
 
@@ -249,6 +253,7 @@ class Gui:
     def change_square(self, event: Event) -> None:
         self.click_square: Widget = event.widget
         row, col = self.click_square.grid_info()["row"], self.click_square.grid_info()["column"]
+        # if statement makes sure the square hasn't already been selected, then player can move
         if self.Logic.sq[row][col] == 0:
             self.Logic.playermove(row, col)
             self.update_screen(row, col)
